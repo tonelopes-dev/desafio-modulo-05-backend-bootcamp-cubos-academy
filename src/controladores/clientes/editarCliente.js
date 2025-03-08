@@ -4,6 +4,14 @@ const editarCliente = async (req, res) => {
   let { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
   const { id } = req.params;
 
+  if (!id) {
+    return res.status(400).json({ mensagem: "O id é obrigatório" });
+  }
+
+  if (!nome && !email && !cpf) {
+    return res.status(400).json({ mensagem: "O nome, email ou cpf é obrigatório no body da requisição" });
+  }
+
   try {
     if (email) {
       const buscarEmail = await knex("clientes").where({ email }).first();
